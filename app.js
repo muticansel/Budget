@@ -62,7 +62,6 @@ var budgetController = (function () {
             else
                 data.percentage = -1;
         },
-
         getBudget: function() {
             return {
                 budget: data.budget,
@@ -81,7 +80,11 @@ var UIController = (function () {
         inputValue: '.add__value',
         btnAdd: '.add__btn',
         incomeContainer: '.income__list',
-        expenseContainer: '.expense__list'
+        expenseContainer: '.expense__list',
+        budgetValue: ".budget__value",
+        budgetIncValue: ".budget__income--value",
+        budgetExpValue: ".budget__expenses--value",
+        percentage: ".budget__expenses--percentage"
     }
 
     return {
@@ -127,6 +130,16 @@ var UIController = (function () {
 
             fieldsArr[0].focus();
         },
+        displayBudget: function(obj) {
+            debugger;
+            document.querySelector(DOMStrings.budgetValue).textContent = obj.budget;
+            document.querySelector(DOMStrings.budgetIncValue).textContent = obj.totalsInc;
+            document.querySelector(DOMStrings.budgetExpValue).textContent = obj.totalsExp;
+            if(obj.percentage > 0)
+                document.querySelector(DOMStrings.percentage).textContent = obj.percentage + "%";
+            else
+                document.querySelector(DOMStrings.percentage).textContent = "---";
+        },
         getDOMStrings: function () {
             return DOMStrings;
         }
@@ -151,7 +164,7 @@ var controller = (function (budgetCtrl, UICtrl) {
 
         var budget = budgetCtrl.getBudget();
 
-        console.log(budget)
+        UICtrl.displayBudget(budget);
     };
 
     var ctrlAddItem = function() {
@@ -172,6 +185,12 @@ var controller = (function (budgetCtrl, UICtrl) {
     return {
         init: function () {
             setupEventListener();
+            UICtrl.displayBudget({
+                budget: 0,
+                totalsInc: 0,
+                totalsExp: 0,
+                percentage: -1
+            })
         }
     }
 })(budgetController, UIController);
